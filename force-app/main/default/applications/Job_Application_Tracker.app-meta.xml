@@ -14,9 +14,10 @@
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <label>Job Application Tracker</label>
     <navType>Standard</navType>
-    <tabs>standard-Account</tabs>
+    <tabs>Job_Application__c</tabs>
     <tabs>standard-Event</tabs>
     <tabs>standard-Contact</tabs>
+    <tabs>standard-Account</tabs>
     <tabs>standard-Task</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Job_Application_Tracker_UtilityBar</utilityBar>
