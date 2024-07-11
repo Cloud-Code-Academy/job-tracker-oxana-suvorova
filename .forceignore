@@ -10,3 +10,6 @@ package.xml
 
 # LWC Jest
 **/__tests__/**
+
+# Profiles
+**/B2B Reordering Portal Buyer Profile.profile-meta.xml
