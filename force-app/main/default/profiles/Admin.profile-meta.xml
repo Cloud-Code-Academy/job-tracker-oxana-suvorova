@@ -66,11 +66,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Pivotal_Contact__c.IsPrimary__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Pivotal_Contact__c.Role__c</field>
         <readable>true</readable>
     </fieldPermissions>
