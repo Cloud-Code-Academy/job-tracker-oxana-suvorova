@@ -4,6 +4,10 @@
         <application>Job_Application_Tracker</application>
         <visible>true</visible>
     </applicationVisibilities>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>Job_Application_Task__mdt</name>
+    </customMetadataTypeAccesses>
     <description>Enables the sharing and field-level security of objects and fields of the Job Application Tracker application.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Job Application Tracker Permissions</label>
