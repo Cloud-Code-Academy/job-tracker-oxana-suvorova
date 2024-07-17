@@ -1,4 +1,4 @@
-public with sharing class JobApplicationTasksQueueable implements Queueable {
+public class JobApplicationTasksQueueable implements Queueable {
 
     private List<Job_Application__c> jobApps;
     private Set<String> statusSet = new Set<String>();
