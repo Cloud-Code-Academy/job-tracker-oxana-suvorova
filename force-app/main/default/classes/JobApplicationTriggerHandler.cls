@@ -2,6 +2,7 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
 
     private List<Job_Application__c> newJobApps;
     private Map<Id, Job_Application__c> newJobAppsMap;
+    private Map<Id, Job_Application__c> oldJobAppsMap;
 
     /**
      * Constructor. Set instance variables.
@@ -9,6 +10,7 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
     public JobApplicationTriggerHandler() {
         this.newJobApps = (List<Job_Application__c>) Trigger.new;
         this.newJobAppsMap = (Map<Id, Job_Application__c>) Trigger.newMap;
+        this.oldJobAppsMap = (Map<Id, Job_Application__c>) Trigger.oldMap;
     }
     
     /**
@@ -23,7 +25,7 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
             }
         }
         // Set Primary Contact with the first contact related to the Company
-        Map<Id, Id> contactIdByCompanyId = getContactsByAccounts(companies);
+        Map<Id, Id> contactIdByCompanyId = AccountHelper.getContactsByAccounts(companies);
         if (contactIdByCompanyId.size() > 0) {
             for (Job_Application__c jobApp : newJobApps) {
                 if (jobApp.Primary_Contact__c == null && jobApp.Company_Name__c != null) {
@@ -38,7 +40,7 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
     **/
     public override void beforeUpdate() {
         // Collect first Pivotal Contacts
-        Map<Id, Id> pivotContIdByJobAppId = getPivotalContactByJobApp(this.newJobAppsMap.keySet());
+        Map<Id, Id> pivotContIdByJobAppId = JobApplicationHelper.getPivotalContactByJobApp(this.newJobAppsMap.keySet());
         // Collect Account (Company) Ids to get Contacts
         Set<Id> companies = new Set<Id>();
         Set<Id> jobAppIdsToUpdate = new Set<Id>();
@@ -54,7 +56,7 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
         }
         // Set Primary Contact with the first contact related to the Company
         if (companies.size() > 0) {
-            Map<Id, Id> contactIdByCompanyId = getContactsByAccounts(companies);
+            Map<Id, Id> contactIdByCompanyId = AccountHelper.getContactsByAccounts(companies);
             for (Id jobAppId : jobAppIdsToUpdate) {
                 Job_Application__c jobApp = this.newJobAppsMap.get(jobAppId);
                 jobApp.Primary_Contact__c = contactIdByCompanyId.get(jobApp.Company_Name__c);
@@ -63,48 +65,34 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
     }
 
     /**
-    * @description Collect the first related Contact to the Account.
-    * @param accounts: Set of Account Ids
-    * @return: the Map of the first Contact Id by it's Account Id.
+    * @description After Insert method.
     **/
-    private Map<Id, Id> getContactsByAccounts(Set<Id> accounts) {
-        Map<Id, Id> contactIdByAccountId = new Map<Id, Id>();
-        List<Account> accountsWithContacts = [
-            SELECT 
-                Id,
-                (SELECT Id FROM Contacts LIMIT 1)
-            FROM Account
-            WHERE Id IN :accounts
-        ];
-        for (Account acc : accountsWithContacts) {
-            if (acc.Contacts.size() > 0) {
-                contactIdByAccountId.put(acc.Id, acc.Contacts[0].Id);
-            }
-        }
-        return contactIdByAccountId;
+    public override void afterInsert() {
+        afterInsertUpdate();
     }
 
     /**
-    * @description Collect the first Pivotal Contact to the Job Application.
-    * @param jobAppIds: List of Job Application Ids
-    * @return: the Map of the first Pivotal Contact Id by it's Job Application Id.
+    * @description After Update method.
     **/
-    private Map<Id, Id> getPivotalContactByJobApp(Set<Id> jobAppIds) {
-        Map<Id, Id> contactIdByJobAppId = new Map<Id, Id>();
-        List<Job_Application__c> jobAppWithPivotalCont = [
-            SELECT 
-                Id, 
-                (SELECT Contact__c 
-                FROM Pivotal_Contacts__r 
-                ORDER BY Name ASC LIMIT 1)
-                FROM Job_Application__c
-                WHERE Id IN :jobAppIds
-        ];
-        for (Job_Application__c jobApp : jobAppWithPivotalCont) {
-            if (jobApp.Pivotal_Contacts__r.size() > 0) {
-                contactIdByJobAppId.put(jobApp.Id, jobApp.Pivotal_Contacts__r[0].Contact__c);
+    public override void afterUpdate() {
+        afterInsertUpdate();
+    }
+
+    /**
+    * @description After Insert/Update method.
+    **/
+    private void afterInsertUpdate() {
+        // Collect Statuses and Job Applications to create Tasks if Status was updated
+        List<String> statuses = new List<String>();
+        List<Job_Application__c> jobApps = new List<Job_Application__c>();
+        for (Job_Application__c jobApp : this.newJobApps) {
+            if (Trigger.isUpdate && jobApp.Status__c == this.oldJobAppsMap?.get(jobApp.Id).Status__c) {
+                continue;
             }
+            statuses.add(jobApp.Status__c);
+            jobApps.add(jobApp);
         }
-        return contactIdByJobAppId;
+        // Generate the task records based on the application status
+        JobApplicationHelper.addTasksByJobAppStatus(jobApps, statuses);
     }
 }
