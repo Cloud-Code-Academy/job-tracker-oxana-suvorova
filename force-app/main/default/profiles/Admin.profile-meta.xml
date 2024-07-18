@@ -295,6 +295,16 @@
         <field>Task.Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Tax_Deduction__mdt.Filing_status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Tax_Deduction__mdt.isFederal__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>Event-Event Layout</layout>
     </layoutAssignments>
@@ -306,6 +316,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Pivotal_Contact__c-Pivotal Contact Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Tax_Deduction__mdt-Tax Deduction Layout</layout>
     </layoutAssignments>
     <objectPermissions>
         <allowCreate>true</allowCreate>
