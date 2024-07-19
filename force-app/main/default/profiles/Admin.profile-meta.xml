@@ -22,6 +22,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TakeHomePayEstimatorController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>TriggerHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -222,6 +226,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Federal_Tax_Bracket__mdt.Filing_status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Job_Application_Task__mdt.Priority__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -307,6 +316,9 @@
     </fieldPermissions>
     <layoutAssignments>
         <layout>Event-Event Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Federal_Tax_Bracket__mdt-Federal Tax Bracket Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Job_Application_Task__mdt-Job Application Task Layout</layout>

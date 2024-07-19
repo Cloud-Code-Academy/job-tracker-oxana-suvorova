@@ -1,9 +1,11 @@
 <template>
-    <lightning-card title="Take-Home Pay Estimation" icon-name="custom:custom17">
+    <lightning-card title="Take-Home Pay Estimation" icon-name="standard:tax_rate">
         <div class="slds-var-m-around_medium">
             <lightning-input
                 type="number"
                 label="Annual income"
+                formatter="currency"
+                step="0.01"
                 value={annualIncome}
                 onchange={annualIncomeChange}
             ></lightning-input>
@@ -20,6 +22,26 @@
                     value={standardDeduction}
                 ></lightning-formatted-number>
             </p>
+            <p>Taxable Income: &nbsp;
+                <lightning-formatted-number
+                    format-style="currency"
+                    currency-code="USD"
+                    value={taxableIncome}
+                ></lightning-formatted-number>
+            </p>
+            <lightning-input 
+                type="number" 
+                label="Federal taxes"
+                formatter="currency"
+                step="0.01"
+                disabled value={federalTaxValue} 
+            ></lightning-input>
+            <br />
+            <lightning-button
+                label="Estimate"
+                variant="brand"
+                onclick={handleEstimateClick}
+            ></lightning-button>
         </div>
     </lightning-card>
 </template>

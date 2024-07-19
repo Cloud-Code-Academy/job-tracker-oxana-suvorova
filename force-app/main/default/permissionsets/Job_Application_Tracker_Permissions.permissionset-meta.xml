@@ -6,6 +6,10 @@
     </applicationVisibilities>
     <customMetadataTypeAccesses>
         <enabled>true</enabled>
+        <name>Federal_Tax_Bracket__mdt</name>
+    </customMetadataTypeAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
         <name>Job_Application_Task__mdt</name>
     </customMetadataTypeAccesses>
     <customMetadataTypeAccesses>
