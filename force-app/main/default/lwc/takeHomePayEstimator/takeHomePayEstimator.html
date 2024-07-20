@@ -36,12 +36,51 @@
                 step="0.01"
                 disabled value={federalTaxValue} 
             ></lightning-input>
+            <lightning-input 
+                type="number" 
+                label="Social Security"
+                formatter="currency"
+                step="0.01"
+                disabled value={socialSecurity} 
+            ></lightning-input>
+            <lightning-input 
+                type="number" 
+                label="Medicare Withholding"
+                formatter="currency"
+                step="0.01"
+                disabled value={medicare} 
+            ></lightning-input>
+            <br />
+            <div class="slds-text-heading_small slds-text-align_center">Estimated Take-Home Pay:</div>
+            <div class="slds-grid slds-grid_align-space">
+                <div class="slds-col">
+                    <span class="slds-text-heading_small ">annual: &nbsp;
+                        <lightning-formatted-number
+                            format-style="currency"
+                            currency-code="USD"
+                            value={annualPaycheck}
+                        ></lightning-formatted-number>
+                    </span>
+                </div>
+                <div class="slds-col">
+                    <span class="slds-text-heading_small ">monthly: &nbsp;
+                        <lightning-formatted-number
+                            format-style="currency"
+                            currency-code="USD"
+                            value={monthlyPaycheck}
+                        ></lightning-formatted-number>
+                    </span>
+                </div>
+            </div>
             <br />
             <lightning-button
                 label="Estimate"
                 variant="brand"
                 onclick={handleEstimateClick}
             ></lightning-button>
+            <div lwc:if={error} class="slds-var-m-around_medium">
+                <p class="slds-text-color_error">Error:&nbsp;{error}</p>
+            </div>
         </div>
     </lightning-card>
 </template>

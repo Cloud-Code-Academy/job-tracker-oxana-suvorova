@@ -285,6 +285,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Other_Tax__mdt.Taxable_Maximum__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Pivotal_Contact__c.Role__c</field>
         <readable>true</readable>
@@ -325,6 +330,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Job_Application__c-Job Application Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Other_Tax__mdt-Other Tax Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Pivotal_Contact__c-Pivotal Contact Layout</layout>
