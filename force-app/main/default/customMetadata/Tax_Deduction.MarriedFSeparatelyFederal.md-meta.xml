@@ -10,8 +10,4 @@
         <field>Filing_status__c</field>
         <value xsi:type="xsd:string">MarriedFSeparately</value>
     </values>
-    <values>
-        <field>isFederal__c</field>
-        <value xsi:type="xsd:boolean">true</value>
-    </values>
 </CustomMetadata>

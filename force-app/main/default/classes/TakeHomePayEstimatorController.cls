@@ -1,15 +1,18 @@
 public with sharing class TakeHomePayEstimatorController {
 
+    /**
+    * @description Returns Federal Tax Deduction by the Filing Status. 
+    * @param filingStatus: The string that specifies filing status.
+    * @return: Decimal number. Value of the Federal Tax Deduction. 
+    **/
     @AuraEnabled(cacheable=true)
-    public static Decimal getTaxDeduction(String filingStatus, Boolean isFederal) {
+    public static Decimal getTaxDeduction(String filingStatus) {
         List<Tax_Deduction__mdt> taxDeductions = [
             SELECT
                 Filing_status__c,
-                isFederal__c,
                 Deduction__c
             FROM Tax_Deduction__mdt
-            WHERE isFederal__c = :isFederal
-            AND Filing_status__c = :filingStatus
+            WHERE Filing_status__c = :filingStatus
         ];
         if (taxDeductions.size() > 0) {
             return taxDeductions[0].Deduction__c;
@@ -80,5 +83,27 @@ public with sharing class TakeHomePayEstimatorController {
 
     public static Map<String, Other_Tax__mdt> getOtherTaxRates() {
         return Other_Tax__mdt.getAll();
+    }
+
+    @AuraEnabled
+    public static void updateJobApplication(Id recordId, TakeHomePayWrapper wrapper){
+        if (!Schema.SObjectType.Job_Application__c.isUpdateable()) {
+            throw new SecurityException(
+                'You can not update Job Application record'
+            );
+        }
+        try {
+            Job_Application__c jobApp = new Job_Application__c(
+                Id = recordId,
+                Federal_Income_Tax__c = wrapper.federalTaxValue,
+                Social_Security__c = wrapper.socialSecurity,
+                Medicare_Withholding__c = wrapper.medicare,
+                Annual_Take_home_Pay__c = wrapper.annualPaycheck,
+                Monthly_Take_home_Pay__c = wrapper.monthlyPaycheck
+            );
+            Database.update(jobApp);
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
     }
 }

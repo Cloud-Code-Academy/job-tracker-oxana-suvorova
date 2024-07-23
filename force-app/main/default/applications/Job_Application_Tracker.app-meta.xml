@@ -18,6 +18,14 @@
         <type>Flexipage</type>
         <pageOrSobjectType>Job_Application__c</pageOrSobjectType>
     </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <content>Job_Application_Tracker_Home_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+    </actionOverrides>
     <brand>
         <headerColor>#0686CF</headerColor>
         <logo>jobapplicationlogo</logo>
@@ -32,6 +40,7 @@
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <label>Job Application Tracker</label>
     <navType>Standard</navType>
+    <tabs>standard-home</tabs>
     <tabs>Job_Application__c</tabs>
     <tabs>standard-Event</tabs>
     <tabs>standard-Contact</tabs>

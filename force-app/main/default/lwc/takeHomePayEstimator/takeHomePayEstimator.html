@@ -6,6 +6,7 @@
                 label="Annual income"
                 formatter="currency"
                 step="0.01"
+                disabled={recordPage}
                 value={annualIncome}
                 onchange={annualIncomeChange}
             ></lightning-input>
@@ -51,7 +52,9 @@
                 disabled value={medicare} 
             ></lightning-input>
             <br />
-            <div class="slds-text-heading_small slds-text-align_center">Estimated Take-Home Pay:</div>
+            <div class="slds-text-heading_small slds-text-align_center">
+                <strong>Estimated Take-Home Pay:</strong>
+            </div>
             <div class="slds-grid slds-grid_align-space">
                 <div class="slds-col">
                     <span class="slds-text-heading_small ">annual: &nbsp;
@@ -78,6 +81,16 @@
                 variant="brand"
                 onclick={handleEstimateClick}
             ></lightning-button>
+            <lightning-button lwc:if={recordPage}
+                label="Update Job Application"
+                variant="brand-outline"
+                class="slds-m-left_small"
+                onclick={handleUpdateJobAppClick}
+                disabled={needCalculate}
+            ></lightning-button>
+            <span lwc:if={needCalculate} class="slds-m-left_small slds-text-color_destructive">
+                Data not yet calculated. Click 'Estimate'.
+            </span>
             <div lwc:if={error} class="slds-var-m-around_medium">
                 <p class="slds-text-color_error">Error:&nbsp;{error}</p>
             </div>

@@ -8,4 +8,14 @@ public with sharing class TakeHomePayWrapper {
     public String filingStatus { get; set; }
     @AuraEnabled
     public Double taxableIncome { get; set; }
+    @AuraEnabled
+    public Double federalTaxValue { get; set; }
+    @AuraEnabled
+    public Double socialSecurity { get; set; }
+    @AuraEnabled
+    public Double medicare { get; set; }
+    @AuraEnabled
+    public Double annualPaycheck { get; set; }
+    @AuraEnabled
+    public Double monthlyPaycheck { get; set; }
 }
