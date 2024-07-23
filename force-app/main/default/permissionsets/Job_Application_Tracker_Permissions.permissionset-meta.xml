@@ -6,7 +6,15 @@
     </applicationVisibilities>
     <customMetadataTypeAccesses>
         <enabled>true</enabled>
+        <name>Federal_Tax_Bracket__mdt</name>
+    </customMetadataTypeAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
         <name>Job_Application_Task__mdt</name>
+    </customMetadataTypeAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>Tax_Deduction__mdt</name>
     </customMetadataTypeAccesses>
     <description>Enables the sharing and field-level security of objects and fields of the Job Application Tracker application.</description>
     <hasActivationRequired>false</hasActivationRequired>
