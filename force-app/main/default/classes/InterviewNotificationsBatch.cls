@@ -21,7 +21,7 @@ public with sharing class InterviewNotificationsBatch implements Database.Batcha
         if (emailTemplate != null) {
             this.templateId = emailTemplate.Id;
         } else {
-            throw new MyEmailException('Can not find an email with name InterviewNotification');
+            throw new MyEmailException('Can not find an email template with name InterviewNotification');
         }
     }
 
