@@ -19,4 +19,12 @@
     <description>Enables the sharing and field-level security of objects and fields of the Job Application Tracker application.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Job Application Tracker Permissions</label>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>AccessContentBuilder</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>CreateLtngTempInPub</name>
+    </userPermissions>
 </PermissionSet>

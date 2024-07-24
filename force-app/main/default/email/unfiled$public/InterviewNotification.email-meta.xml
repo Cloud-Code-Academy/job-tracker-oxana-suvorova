@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Template for the Interview event notification email.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>InterviewNotification</name>
+    <style>none</style>
+    <subject>Interview Notification Email</subject>
+    <textOnly>Hey {!Event.OwnerId},
+
+Sending along a reminder about your upcoming interview on {!Event.StartDateTime} at {!Event.Location}.
+Review the following information:
+
+Interview Subject: {!Event.Subject}
+Contact Name: {!Event.Who}
+Job Application: {!Event.What}
+Interview format: {!Event.Interview_Format__c}
+Interview type: {!Event.Interview_Type__c}
+
+Good luck, you will succeed!</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
