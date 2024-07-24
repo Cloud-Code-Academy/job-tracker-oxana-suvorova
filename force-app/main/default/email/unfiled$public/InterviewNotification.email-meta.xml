@@ -6,16 +6,17 @@
     <name>InterviewNotification</name>
     <style>none</style>
     <subject>Interview Notification Email</subject>
-    <textOnly>Hey {!Event.OwnerId},
+    <textOnly>Hey {!User.Name},
 
 Sending along a reminder about your upcoming interview on {!Event.StartDateTime} at {!Event.Location}.
 Review the following information:
 
 Interview Subject: {!Event.Subject}
-Contact Name: {!Event.Who}
-Job Application: {!Event.What}
+Contact Name: {!Contact.Name}
+Job Application: {!Job_Application__c.Name}
 Interview format: {!Event.Interview_Format__c}
 Interview type: {!Event.Interview_Type__c}
+Description: {!Event.Description}
 
 Good luck, you will succeed!</textOnly>
     <type>custom</type>
