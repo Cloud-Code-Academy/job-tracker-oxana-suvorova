@@ -1,0 +1,31 @@
+<template>
+    <lightning-card title="Jooble Job Board - Search" icon-name="standard:employee_job_position">
+        <div class="slds-grid slds-var-m-around_medium  slds-grid_vertical-align-end">
+            <lightning-input
+                    type="text"
+                    label="Search Keywords"
+                    placeholder="type here..."
+                    value={keywords}
+                    onchange={handleKeywordsChange}
+                    class="slds-p-horizontal_medium"
+            ></lightning-input>
+            <lightning-input
+                    type="text"
+                    label="Location"
+                    placeholder="Boston, MA"
+                    value={location}
+                    onchange={handleLocationChange}
+                    class="slds-p-horizontal_medium"
+            ></lightning-input>
+            <br />
+            <lightning-button
+                    label="Search"
+                    variant="brand"
+                    icon-name="utility:search"
+                    class="slds-p-horizontal_medium slds-m-left_x-small"
+                    onclick={handleSearchClick}
+            ></lightning-button>
+            <p>Message: &nbsp; {someResult}</p>
+        </div>
+    </lightning-card>
+</template>
