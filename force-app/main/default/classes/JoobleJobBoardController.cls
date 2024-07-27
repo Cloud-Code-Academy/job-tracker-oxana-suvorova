@@ -1,18 +1,22 @@
 public with sharing class JoobleJobBoardController {
 
     @AuraEnabled
-    public static String getNewJobPositions(String keywords, String location){
+    public static List<JoobleWrapper.JoobleJob> getNewJobPositions(String keywords, String location){
         try {
+            List<JoobleWrapper.JoobleJob> newJobs = new List<JoobleWrapper.JoobleJob>();
+
             Map<String, String> paramsMap = new Map<String, String>();
             paramsMap.put('keywords', keywords);
             paramsMap.put('location', location);
             String params = JSON.serialize(paramsMap);
             
             HttpResponse response = makeCallout(params);
-            JoobleWrapper jobWrap = (JoobleWrapper) JSON.deserialize(response.getBody(), JoobleWrapper.class);
-            System.debug(jobWrap);
+            if (response.getStatusCode() == 200) {
+                JoobleWrapper jobWrap = JoobleWrapper.parse(response.getBody());
+                newJobs = jobWrap.jobs;
+            }
 
-            return String.valueOf(response.getStatusCode());
+            return newJobs;
 
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());

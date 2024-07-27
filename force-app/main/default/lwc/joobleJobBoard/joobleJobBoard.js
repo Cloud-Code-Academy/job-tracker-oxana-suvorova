@@ -1,12 +1,15 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement, track, wire } from 'lwc';
 import getNewJobPositions from '@salesforce/apex/JoobleJobBoardController.getNewJobPositions'
+// Import message service features for publishing and the message channel
+import { publish, MessageContext } from 'lightning/messageService';
+import JOOBLE_SEARCH_RESULT_CHANNEL from '@salesforce/messageChannel/JoobleSearchResult__c';
 
 export default class JoobleJobBoard extends LightningElement {
-    keywords;
-    location;
+    keywords = '';
+    location = '';
 
-    searchResult = [];
-    someResult;
+    @wire(MessageContext)
+    messageContext;
 
     @track error;
 
@@ -19,15 +22,28 @@ export default class JoobleJobBoard extends LightningElement {
     }
 
     async handleSearchClick() {
-        getNewJobPositions({ keywords: this.keywords, location: this.location })
-        .then(data => {
-            console.log('Status code:');
-            console.log(data);
-            this.someResult = 'true';
-        })
-        .catch(error => {
-            this.error = error;
-            crossOriginIsolated.log(' error ', this.error);
-        })
+        // Check if required field were filled out
+        const allValid = [
+            ...this.template.querySelectorAll('lightning-input'),
+        ].reduce((validSoFar, inputCmp) => {
+            inputCmp.reportValidity();
+            this.error = undefined;
+            return validSoFar && inputCmp.checkValidity();
+        }, true);
+        
+        // If all valid, request new positions
+        if (allValid) {
+            getNewJobPositions({ keywords: this.keywords, location: this.location })
+            .then(data => {
+                const payload = { searchResult: data };
+                publish(this.messageContext, JOOBLE_SEARCH_RESULT_CHANNEL, payload);
+            })
+            .catch(error => {
+                this.error = error;
+                crossOriginIsolated.log(' error ', this.error);
+            })
+        } else {
+            this.error = 'Please fill all required fields out';
+        }
     }
 }

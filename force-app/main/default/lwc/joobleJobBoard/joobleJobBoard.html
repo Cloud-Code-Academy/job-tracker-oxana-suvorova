@@ -6,6 +6,7 @@
                     label="Search Keywords"
                     placeholder="type here..."
                     value={keywords}
+                    required
                     onchange={handleKeywordsChange}
                     class="slds-p-horizontal_medium"
             ></lightning-input>
@@ -25,7 +26,9 @@
                     class="slds-p-horizontal_medium slds-m-left_x-small"
                     onclick={handleSearchClick}
             ></lightning-button>
-            <p>Message: &nbsp; {someResult}</p>
+            <div lwc:if={error} class="slds-var-m-around_medium">
+                <p class="slds-text-color_error">Error:&nbsp;{error}</p>
+            </div>
         </div>
     </lightning-card>
 </template>

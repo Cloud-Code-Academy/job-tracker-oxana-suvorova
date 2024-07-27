@@ -1,0 +1,14 @@
+<template>
+    <lightning-card title="Jooble Job Board - Job List" icon-name="standard:customer_portal_users">
+        <div class="slds-var-m-around_medium">
+            <template lwc:if={searchResult}>
+                <lightning-datatable
+                    key-field="id"
+                    data={searchResult}
+                    columns={columns}
+                >
+                </lightning-datatable>
+            </template>
+        </div>
+    </lightning-card>
+</template>

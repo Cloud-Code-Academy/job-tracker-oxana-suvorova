@@ -3,9 +3,9 @@
  */
 public with sharing class JoobleWrapper {
     @AuraEnabled public Integer totalCount {get;set;}
-    @AuraEnabled public List<JoobleJobs> jobs {get;set;}
+    @AuraEnabled public List<JoobleJob> jobs {get;set;}
 
-    public class JoobleJobs {
+    public class JoobleJob {
         @AuraEnabled public String title {get;set;}
         @AuraEnabled public String location {get;set;}
         @AuraEnabled public String snippet {get;set;}
@@ -16,5 +16,9 @@ public with sharing class JoobleWrapper {
         @AuraEnabled public String company {get;set;}
         @AuraEnabled public Datetime updated {get;set;}
         @AuraEnabled public String id {get;set;}
+    }
+
+    public static JoobleWrapper parse(String json) {
+        return (JoobleWrapper) System.JSON.deserialize(json, JoobleWrapper.class);
     }
 }
