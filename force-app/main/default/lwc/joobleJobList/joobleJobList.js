@@ -1,4 +1,4 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire, api } from 'lwc';
 
 // Import message service features for subscribing
 import { subscribe, MessageContext } from 'lightning/messageService';
@@ -11,10 +11,13 @@ const COLS = [
     { label: 'Type', fieldName: 'type' },
     { label: 'Company', fieldName: 'company' },
     { label: 'Updated', fieldName: 'updated', type: 'date' },
+    { label: 'Source', fieldName: 'source' },
     { label: 'Link', fieldName: 'link', type: 'url' }
 ];
 
 export default class JoobleJobList extends LightningElement {
+    @api _saveselected = false;
+
     columns = COLS;
     subscription = null;
     searchResult;
@@ -43,10 +46,24 @@ export default class JoobleJobList extends LightningElement {
         this.subscribeToMessageChannel();
     }
 
-    getSelectedData() {
-        // const selectedRows = event.detail.selectedRows;
-        // for (let i = 0; i < selectedRows.length; i++) {
-        //     alert('You selected: ' + selected.Rows[i].Title);
-        // }
+    @api
+    set saveselected(value) {
+        this._saveselected = value;
+        if (value) {
+            this.pushSelectedData();
+        }
+    }
+
+    get saveselected() {
+        return this._saveselected;
+    }
+
+    pushSelectedData() {
+        const element = this.template.querySelector('lightning-datatable');
+        const selectedRows = element.getSelectedRows();
+        console.log(selectedRows);
+        for (let i = 0; i < selectedRows.length; i++) {
+            alert('You selected: ' + selectedRows[i].title);
+        }
     }
 }

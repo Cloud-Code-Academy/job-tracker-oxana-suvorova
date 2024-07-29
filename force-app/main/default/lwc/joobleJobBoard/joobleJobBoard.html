@@ -26,6 +26,12 @@
                     class="slds-p-horizontal_medium slds-m-left_x-small"
                     onclick={handleSearchClick}
             ></lightning-button>
+            <lightning-button
+                    label="Save Selected Jobs"
+                    variant="brand"
+                    icon-name="utility:insert_template"
+                    onclick={handleSaveSelectedJobsClick}
+            ></lightning-button>
             <div lwc:if={error} class="slds-var-m-around_medium">
                 <p class="slds-text-color_error">Error:&nbsp;{error}</p>
             </div>

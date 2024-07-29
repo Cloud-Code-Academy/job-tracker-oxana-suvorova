@@ -4,6 +4,26 @@
     <isExposed>true</isExposed>
     <targets>
         <target>lightning__AppPage</target>
-        <target>lightning__HomePage</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage">
+            <event
+                name="saveselected"
+                label="Save Selected Jobs"
+                description="This event fires when a button is pushed."
+            >
+                <schema>
+                    {
+                        "type": "object",
+                        "properties": {
+                            "saveselected": {
+                                "type": "boolean",
+                                "title": "Save selected Jobs"
+                            }
+                        }
+                    }
+                </schema>
+            </event>
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

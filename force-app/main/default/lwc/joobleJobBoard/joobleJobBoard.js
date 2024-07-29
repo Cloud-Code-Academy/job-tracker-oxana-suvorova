@@ -46,4 +46,12 @@ export default class JoobleJobBoard extends LightningElement {
             this.error = 'Please fill all required fields out';
         }
     }
+
+    handleSaveSelectedJobsClick() {
+        this.dispatchEvent(
+            new CustomEvent('saveselected', {
+                detail: { saveselected: true }
+            })
+        );
+    }
 }
