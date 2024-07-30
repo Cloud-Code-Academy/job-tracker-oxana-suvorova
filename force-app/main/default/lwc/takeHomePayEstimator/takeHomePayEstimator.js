@@ -46,6 +46,16 @@ export default class TakeHomePayEstimator extends LightningElement {
         return this.annualPaycheck / 12;
     }
 
+    // TODO: Rewrite these Paycheck in the table view with formula (more unified form)
+    get semiannualPaycheck() {
+        return this.annualPaycheck / 2;
+    }
+
+    get biweeklyPaycheck() {
+        // There are 52 weeks in a year. 
+        return this.annualPaycheck / 26;
+    }
+
     filingStatusOptions = [
         { label: 'Single', value: 'Single' },
         { label: 'Married, filing jointly', value: 'MarriedFJointly' },
