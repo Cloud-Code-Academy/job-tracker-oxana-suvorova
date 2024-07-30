@@ -41,6 +41,7 @@
     <label>Job Application Tracker</label>
     <navType>Standard</navType>
     <tabs>standard-home</tabs>
+    <tabs>Jooble_Job_Board</tabs>
     <tabs>Job_Application__c</tabs>
     <tabs>standard-Event</tabs>
     <tabs>standard-Contact</tabs>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage">
+            <event
+                name="saveselected"
+                label="Save Selected Jobs"
+                description="This event fires when a button is pushed."
+            >
+                <schema>
+                    {
+                        "type": "object",
+                        "properties": {
+                            "saveselected": {
+                                "type": "boolean",
+                                "title": "Save selected Jobs"
+                            }
+                        }
+                    }
+                </schema>
+            </event>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
