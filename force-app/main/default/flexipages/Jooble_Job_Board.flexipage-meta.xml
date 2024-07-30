@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <events>
+        <sourceName>c_joobleJobBoard</sourceName>
+        <sourceProperties>
+            <name>eventName</name>
+            <value>saveselected</value>
+        </sourceProperties>
+        <sourceType>Component</sourceType>
+        <targets>
+            <mappings>
+                <name>saveselected</name>
+                <value>{!Event.saveselected}</value>
+            </mappings>
+            <method>updateProperties</method>
+            <name>flexipage:componentService</name>
+            <properties>
+                <name>componentIdentifier</name>
+                <value>c_joobleJobList</value>
+            </properties>
+            <type>FlexipageServices</type>
+        </targets>
+    </events>
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
@@ -11,6 +32,16 @@
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>saveselected</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentName>joobleJobList</componentName>
+                <identifier>c_joobleJobList</identifier>
+            </componentInstance>
+        </itemInstances>
         <name>region2</name>
         <type>Region</type>
     </flexiPageRegions>

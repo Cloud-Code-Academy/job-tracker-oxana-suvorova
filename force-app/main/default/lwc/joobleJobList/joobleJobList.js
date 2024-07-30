@@ -1,4 +1,6 @@
-import { LightningElement, wire, api } from 'lwc';
+import { LightningElement, wire, api, track } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import saveNewJobPositions from '@salesforce/apex/JoobleJobBoardController.saveNewJobPositions';
 
 // Import message service features for subscribing
 import { subscribe, MessageContext } from 'lightning/messageService';
@@ -16,7 +18,7 @@ const COLS = [
 ];
 
 export default class JoobleJobList extends LightningElement {
-    @api _saveselected = false;
+    @track _saveselected = false;
 
     columns = COLS;
     subscription = null;
@@ -49,7 +51,7 @@ export default class JoobleJobList extends LightningElement {
     @api
     set saveselected(value) {
         this._saveselected = value;
-        if (value) {
+        if (this._saveselected) {
             this.pushSelectedData();
         }
     }
@@ -58,12 +60,33 @@ export default class JoobleJobList extends LightningElement {
         return this._saveselected;
     }
 
-    pushSelectedData() {
+    async pushSelectedData() {
         const element = this.template.querySelector('lightning-datatable');
         const selectedRows = element.getSelectedRows();
-        console.log(selectedRows);
-        for (let i = 0; i < selectedRows.length; i++) {
-            alert('You selected: ' + selectedRows[i].title);
+
+        if (selectedRows.length > 0) {
+            try {
+                // Pass selected rows to the saveNewJobPositions Apex contriller
+                await saveNewJobPositions({ selectedJobs: selectedRows });
+    
+                // Report success with a toast
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Success',
+                        message: 'Job Application records were created',
+                        variant: 'success'
+                    })
+                );
+            } catch (error) {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error while inserting selected records',
+                        message: error.body.message,
+                        variant: 'error'
+                    })
+                );
+            }
+            this._saveselected = false;
         }
     }
 }

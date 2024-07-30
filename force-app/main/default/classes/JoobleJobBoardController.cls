@@ -1,13 +1,19 @@
 public with sharing class JoobleJobBoardController {
 
     @AuraEnabled
-    public static List<JoobleWrapper.JoobleJob> getNewJobPositions(String keywords, String location){
+    public static List<JoobleWrapper.JoobleJob> getNewJobPositions(String keywords, String location, Datetime dateFrom){
         try {
             List<JoobleWrapper.JoobleJob> newJobs = new List<JoobleWrapper.JoobleJob>();
 
             Map<String, String> paramsMap = new Map<String, String>();
             paramsMap.put('keywords', keywords);
             paramsMap.put('location', location);
+            // For now, I add limit on number of jobs from the Jooble.
+            // TODO: Add pages and refreshApex to get more job records
+            paramsMap.put('resultonpage', '20');
+            if (dateFrom != null) {
+                paramsMap.put('datecreatedfrom', dateFrom.format('yyyy-MM-dd'));
+            }
             String params = JSON.serialize(paramsMap);
             
             HttpResponse response = makeCallout(params);
@@ -33,5 +39,73 @@ public with sharing class JoobleJobBoardController {
         HttpResponse response = http.send(request);
 
         return response;
+    }
+
+    @AuraEnabled
+    public static void saveNewJobPositions(List<JoobleWrapper.JoobleJob> selectedJobs){
+        // Check if we can insert records before trying to insert
+        if (!Schema.SObjectType.Job_Application__c.isCreateable()) {
+            throw new SecurityException(
+                'Insufficient permissions to create Job Applications'
+            );
+        }
+        // collect account names
+        Set<String> accNames = new Set<String>();
+        for (JoobleWrapper.JoobleJob joobleJob : selectedJobs) {
+            if (String.isBlank(joobleJob.company)) {
+                joobleJob.company = 'Default Empty Company';
+            }
+            accNames.add(joobleJob.company);
+        }
+
+        Map<String, Account> accountsByName = getAccountsByName(accNames);
+        // Upsert Job Applications
+        List<Job_Application__c> newJobApps = new List<Job_Application__c>();
+        for (JoobleWrapper.JoobleJob joobleJob : selectedJobs) {
+            Job_Application__c jobApp = new Job_Application__c();
+            jobApp.Position_Title__c = joobleJob.title;
+            jobApp.Location__c = joobleJob.location;
+            jobApp.Description__c = 'Type: ' + joobleJob.type + '<br />' + joobleJob.snippet;
+            jobApp.Salary_Info__c = joobleJob.salary;
+            jobApp.URL__c = joobleJob.link;
+            jobApp.Jooble_Id__c = joobleJob.id;
+            jobApp.Company_Name__c = accountsByName.get(joobleJob.company).Id;
+            newJobApps.add(jobApp);
+        }
+        Database.upsert(newJobApps, Job_Application__c.Jooble_Id__c);
+    }
+
+    private static Map<String, Account> getAccountsByName(Set<String> accNames) {
+        Map<String, Account> accountsByName = new Map<String, Account>();
+        List<Account> accounts = [
+            SELECT 
+                Id,
+                Name
+            FROM Account
+            WHERE Name IN :accNames
+        ];
+        // Add existing Accounts
+        for (Account acc : accounts) {
+            accountsByName.put(acc.Name, acc);
+        }
+        // Check and create new Accounts
+        Set<String> accountsKeys = accountsByName.keySet();
+        if (accountsKeys.containsAll(accNames)) {
+            // return Accounts Map if we have all names
+            return accountsByName;
+        }
+        List<Account> newAccs = new List<Account>();
+        Set<String> tempNameSet = new Set<String>(accNames);
+        tempNameSet.removeAll(accountsKeys);
+        for (String name : tempNameSet) {
+            Account acc = new Account(Name=name);
+            accountsByName.put(name, acc);
+            newAccs.add(acc);
+        }
+        if (newAccs.size() > 0) {
+            Database.insert(newAccs);
+        }
+
+        return accountsByName;
     }
 }
