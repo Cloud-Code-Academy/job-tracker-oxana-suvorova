@@ -109,6 +109,10 @@
                 <behavior>Readonly</behavior>
                 <field>Monthly_Take_home_Pay__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Filing_status__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>

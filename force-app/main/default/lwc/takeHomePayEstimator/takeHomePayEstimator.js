@@ -117,7 +117,8 @@ export default class TakeHomePayEstimator extends LightningElement {
         try {
             await updateJobApplication({
                 recordId: this.recordId,
-                wrapper: takeHomePayResults
+                wrapper: takeHomePayResults,
+                filingStatus: this.filingStatus
             });
             this.dispatchEvent(
                 new ShowToastEvent({

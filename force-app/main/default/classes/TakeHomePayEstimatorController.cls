@@ -86,7 +86,7 @@ public with sharing class TakeHomePayEstimatorController {
     }
 
     @AuraEnabled
-    public static void updateJobApplication(Id recordId, TakeHomePayWrapper wrapper){
+    public static void updateJobApplication(Id recordId, TakeHomePayWrapper wrapper, String filingStatus){
         if (!Schema.SObjectType.Job_Application__c.isUpdateable()) {
             throw new SecurityException(
                 'You can not update Job Application record'
@@ -99,7 +99,8 @@ public with sharing class TakeHomePayEstimatorController {
                 Social_Security__c = wrapper.socialSecurity,
                 Medicare_Withholding__c = wrapper.medicare,
                 Annual_Take_home_Pay__c = wrapper.annualPaycheck,
-                Monthly_Take_home_Pay__c = wrapper.monthlyPaycheck
+                Monthly_Take_home_Pay__c = wrapper.monthlyPaycheck,
+                Filing_status__c = filingStatus
             );
             Database.update(jobApp);
         } catch (Exception e) {
