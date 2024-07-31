@@ -58,7 +58,7 @@ public with sharing class JoobleJobBoardController {
             accNames.add(joobleJob.company);
         }
 
-        Map<String, Account> accountsByName = getAccountsByName(accNames);
+        Map<String, Account> accountsByName = AccountHelper.getAccountsByName(accNames);
         // Upsert Job Applications
         List<Job_Application__c> newJobApps = new List<Job_Application__c>();
         for (JoobleWrapper.JoobleJob joobleJob : selectedJobs) {
@@ -73,39 +73,5 @@ public with sharing class JoobleJobBoardController {
             newJobApps.add(jobApp);
         }
         Database.upsert(newJobApps, Job_Application__c.Jooble_Id__c);
-    }
-
-    private static Map<String, Account> getAccountsByName(Set<String> accNames) {
-        Map<String, Account> accountsByName = new Map<String, Account>();
-        List<Account> accounts = [
-            SELECT 
-                Id,
-                Name
-            FROM Account
-            WHERE Name IN :accNames
-        ];
-        // Add existing Accounts
-        for (Account acc : accounts) {
-            accountsByName.put(acc.Name, acc);
-        }
-        // Check and create new Accounts
-        Set<String> accountsKeys = accountsByName.keySet();
-        if (accountsKeys.containsAll(accNames)) {
-            // return Accounts Map if we have all names
-            return accountsByName;
-        }
-        List<Account> newAccs = new List<Account>();
-        Set<String> tempNameSet = new Set<String>(accNames);
-        tempNameSet.removeAll(accountsKeys);
-        for (String name : tempNameSet) {
-            Account acc = new Account(Name=name);
-            accountsByName.put(name, acc);
-            newAccs.add(acc);
-        }
-        if (newAccs.size() > 0) {
-            Database.insert(newAccs);
-        }
-
-        return accountsByName;
     }
 }
