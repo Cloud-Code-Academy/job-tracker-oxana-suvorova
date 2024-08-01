@@ -1,5 +1,13 @@
 public with sharing class JoobleJobBoardController {
 
+    /**
+    * @description Returns the result of callout request to the Jooble Job Board API.
+    * Callout response Wrapped by class JoobleWrapper and uses in LWC JoobleJobBoard
+    * @param keywords: The String represents the search keywords to pass in Callout.
+    * @param location: The String used to search for jobs in certain location
+    * @param dateFrom: The Datetime value to filter jobs created after this date.
+    * @return: The List of wrapped Job positions
+    **/
     @AuraEnabled
     public static List<JoobleWrapper.JoobleJob> getNewJobPositions(String keywords, String location, Datetime dateFrom){
         try {

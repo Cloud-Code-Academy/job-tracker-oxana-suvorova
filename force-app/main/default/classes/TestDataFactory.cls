@@ -63,4 +63,32 @@ public with sharing class TestDataFactory {
 
         Database.insert(events);
     }
+
+    /**
+     * Create Account (Company for Job Application)
+     * @return: Created Account
+     */
+    public static Account createAccount() {
+        Account acc = new Account(Name='Test Account');
+        Database.insert(acc);
+
+        return acc;
+    }
+
+    /**
+     * Create Job Application
+     * @param acc: Account as a Company
+     * @return: Created Job Application
+     */
+    public static Job_Application__c createJobApplication(Account acc) {
+        User stUser = createUser('stuser');
+        Job_Application__c jobApp = new Job_Application__c(
+            Position_Title__c = 'Test Position',
+            Company_Name__c = acc.Id,
+            OwnerId = stUser.Id
+        );
+        Database.insert(jobApp);
+
+        return jobApp;
+    }
 }

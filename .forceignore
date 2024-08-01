@@ -13,3 +13,6 @@ package.xml
 
 # Profiles
 **/B2B Reordering Portal Buyer Profile.profile-meta.xml
+**/tsconfig.json
+
+**/*.ts
