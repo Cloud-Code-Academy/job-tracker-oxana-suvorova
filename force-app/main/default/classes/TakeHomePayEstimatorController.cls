@@ -103,8 +103,8 @@ public with sharing class TakeHomePayEstimatorController {
                 Filing_status__c = filingStatus
             );
             Database.update(jobApp);
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
+        } catch (Exception ex) {
+            throw new AuraHandledException(ex.getMessage());
         }
     }
 }

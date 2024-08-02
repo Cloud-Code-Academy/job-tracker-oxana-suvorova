@@ -22,4 +22,42 @@ public with sharing class AccountHelper {
         return contactIdByAccountId;
     }
     
+    /**
+    * @description Collect Accounts by name. If Account does not exist, create it.
+    * @param accNames: Set of Account Names
+    * @return: the Map of the Account by it's Name.
+    **/
+    public static Map<String, Account> getAccountsByName(Set<String> accNames) {
+        Map<String, Account> accountsByName = new Map<String, Account>();
+        List<Account> accounts = [
+            SELECT 
+                Id,
+                Name
+            FROM Account
+            WHERE Name IN :accNames
+        ];
+        // Add existing Accounts
+        for (Account acc : accounts) {
+            accountsByName.put(acc.Name, acc);
+        }
+        // Check and create new Accounts
+        Set<String> accountsKeys = accountsByName.keySet();
+        if (accountsKeys.containsAll(accNames)) {
+            // return Accounts Map if we have all names
+            return accountsByName;
+        }
+        List<Account> newAccs = new List<Account>();
+        Set<String> tempNameSet = new Set<String>(accNames);
+        tempNameSet.removeAll(accountsKeys);
+        for (String name : tempNameSet) {
+            Account acc = new Account(Name=name);
+            accountsByName.put(name, acc);
+            newAccs.add(acc);
+        }
+        if (newAccs.size() > 0) {
+            Database.insert(newAccs);
+        }
+
+        return accountsByName;
+    }
 }

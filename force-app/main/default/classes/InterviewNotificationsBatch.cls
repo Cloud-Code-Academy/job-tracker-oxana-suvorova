@@ -5,11 +5,16 @@
 * Sends an email notification to the user before their scheduled interview.
 *
 **/
-public with sharing class InterviewNotificationsBatch implements Database.Batchable<sObject> {
+public class InterviewNotificationsBatch implements Database.Batchable<sObject>, Database.Stateful {
     
     public class MyEmailException extends Exception {}
 
+    @TestVisible
     private Id templateId;
+    @TestVisible
+    private Integer emailsSent = 0;
+    @TestVisible
+    static Integer testEmailsSent;
 
     public InterviewNotificationsBatch() {
         EmailTemplate emailTemplate = [
@@ -18,11 +23,8 @@ public with sharing class InterviewNotificationsBatch implements Database.Batcha
             WHERE DeveloperName = 'InterviewNotification'
             LIMIT 1
         ];
-        if (emailTemplate != null) {
-            this.templateId = emailTemplate.Id;
-        } else {
-            throw new MyEmailException('Can not find an email template with name InterviewNotification');
-        }
+        // As the classic template exist in the project I don't need to try/catch
+        this.templateId = emailTemplate.Id;
     }
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
@@ -52,15 +54,23 @@ public with sharing class InterviewNotificationsBatch implements Database.Batcha
         }
         if (emails.size() > 0) {
             try {
-                Messaging.sendEmail(emails);
-            } catch (Exception ex) {
-                System.debug('Error sending email: ' + ex.getMessage());
+                List<Messaging.SendEmailResult> sendEmailRes = Messaging.sendEmail(emails);
+                for (Messaging.SendEmailResult emailRes : sendEmailRes) {
+                    If (emailRes.isSuccess()) {
+                        emailsSent = emailsSent + 1;
+                    }
+                }
+            } catch (MyEmailException ex) {
+                throw new MyEmailException('Error sending email: ' + ex.getMessage());
             }
         }
     }
 
-    public void finish(Database.BatchableContext bc) {}
+    public void finish(Database.BatchableContext bc) {
+        testEmailsSent = emailsSent;
+    }
 
+    @TestVisible
     private Messaging.SingleEmailMessage composeEmailMessage(Event interview) {
         Messaging.SingleEmailMessage email = Messaging.renderStoredEmailTemplate(this.templateId, interview.OwnerId, interview.Id);
         email.setTargetObjectId(interview.OwnerId);

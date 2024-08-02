@@ -1,5 +1,13 @@
 public with sharing class JoobleJobBoardController {
 
+    /**
+    * @description Returns the result of callout request to the Jooble Job Board API.
+    * Callout response Wrapped by class JoobleWrapper and uses in LWC JoobleJobBoard
+    * @param keywords: The String represents the search keywords to pass in Callout.
+    * @param location: The String used to search for jobs in certain location
+    * @param dateFrom: The Datetime value to filter jobs created after this date.
+    * @return: The List of wrapped Job positions
+    **/
     @AuraEnabled
     public static List<JoobleWrapper.JoobleJob> getNewJobPositions(String keywords, String location, Datetime dateFrom){
         try {
@@ -20,12 +28,14 @@ public with sharing class JoobleJobBoardController {
             if (response.getStatusCode() == 200) {
                 JoobleWrapper jobWrap = JoobleWrapper.parse(response.getBody());
                 newJobs = jobWrap.jobs;
+            } else {
+                throw new CalloutException('Bad request');
             }
 
             return newJobs;
 
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
+        } catch (Exception ex) {
+            throw new AuraHandledException(ex.getMessage());
         }
     }
 
@@ -58,7 +68,7 @@ public with sharing class JoobleJobBoardController {
             accNames.add(joobleJob.company);
         }
 
-        Map<String, Account> accountsByName = getAccountsByName(accNames);
+        Map<String, Account> accountsByName = AccountHelper.getAccountsByName(accNames);
         // Upsert Job Applications
         List<Job_Application__c> newJobApps = new List<Job_Application__c>();
         for (JoobleWrapper.JoobleJob joobleJob : selectedJobs) {
@@ -73,39 +83,5 @@ public with sharing class JoobleJobBoardController {
             newJobApps.add(jobApp);
         }
         Database.upsert(newJobApps, Job_Application__c.Jooble_Id__c);
-    }
-
-    private static Map<String, Account> getAccountsByName(Set<String> accNames) {
-        Map<String, Account> accountsByName = new Map<String, Account>();
-        List<Account> accounts = [
-            SELECT 
-                Id,
-                Name
-            FROM Account
-            WHERE Name IN :accNames
-        ];
-        // Add existing Accounts
-        for (Account acc : accounts) {
-            accountsByName.put(acc.Name, acc);
-        }
-        // Check and create new Accounts
-        Set<String> accountsKeys = accountsByName.keySet();
-        if (accountsKeys.containsAll(accNames)) {
-            // return Accounts Map if we have all names
-            return accountsByName;
-        }
-        List<Account> newAccs = new List<Account>();
-        Set<String> tempNameSet = new Set<String>(accNames);
-        tempNameSet.removeAll(accountsKeys);
-        for (String name : tempNameSet) {
-            Account acc = new Account(Name=name);
-            accountsByName.put(name, acc);
-            newAccs.add(acc);
-        }
-        if (newAccs.size() > 0) {
-            Database.insert(newAccs);
-        }
-
-        return accountsByName;
     }
 }

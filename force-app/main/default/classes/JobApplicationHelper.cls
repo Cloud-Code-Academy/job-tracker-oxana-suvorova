@@ -26,7 +26,8 @@ public with sharing class JobApplicationHelper {
 
     /**
     * @description Runs Queueable class to create Tasks related to the Job Application Status
-    * @param jobAppStatusById: Map of the Job Application Statuses by the Job Application Ids
+    * @param jobApps: List of Job Applications 
+    * @param statuses: List of Job Application's statuses
     **/
     public static void addTasksByJobAppStatus(List<Job_Application__c> jobApps, List<String> statuses) {
         JobApplicationTasksQueueable jobAppTasksJob = new JobApplicationTasksQueueable(jobApps, statuses);

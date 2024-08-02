@@ -2,7 +2,7 @@
  * Wrapper class used to pass Callout response from Apex JoobleJobBoardController to LWC joobleJobBoard.
  */
 public with sharing class JoobleWrapper {
-    @AuraEnabled public Integer totalCount {get;set;}
+    // @AuraEnabled public Integer totalCount {get;set;} // TODO use for paginations
     @AuraEnabled public List<JoobleJob> jobs {get;set;}
 
     public class JoobleJob {
