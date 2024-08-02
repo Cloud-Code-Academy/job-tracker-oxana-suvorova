@@ -81,7 +81,11 @@ public with sharing class TestDataFactory {
      * @return: Created Job Application
      */
     public static Job_Application__c createJobApplication(Account acc) {
-        User stUser = createUser('stuser');
+        User stUser = [SELECT Id FROM User LIMIT 1];
+        if (stUser == null) {
+            stUser = createUser('stuser');
+        }
+
         Job_Application__c jobApp = new Job_Application__c(
             Position_Title__c = 'Test Position',
             Company_Name__c = acc.Id,
