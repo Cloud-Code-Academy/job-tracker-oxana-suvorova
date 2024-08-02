@@ -28,12 +28,14 @@ public with sharing class JoobleJobBoardController {
             if (response.getStatusCode() == 200) {
                 JoobleWrapper jobWrap = JoobleWrapper.parse(response.getBody());
                 newJobs = jobWrap.jobs;
+            } else {
+                throw new CalloutException('Bad request');
             }
 
             return newJobs;
 
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
+        } catch (Exception ex) {
+            throw new AuraHandledException(ex.getMessage());
         }
     }
 
