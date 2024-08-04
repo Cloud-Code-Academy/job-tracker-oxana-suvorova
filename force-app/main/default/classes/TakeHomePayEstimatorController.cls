@@ -14,11 +14,7 @@ public with sharing class TakeHomePayEstimatorController {
             FROM Tax_Deduction__mdt
             WHERE Filing_status__c = :filingStatus
         ];
-        if (taxDeductions.size() > 0) {
-            return taxDeductions[0].Deduction__c;
-        } else {
-            throw new AuraHandledException('Tax Deductions are not specified!');
-        }
+        return taxDeductions[0].Deduction__c;
     }
 
     /**
@@ -60,11 +56,7 @@ public with sharing class TakeHomePayEstimatorController {
         results.put('medicare', medicare);
         results.put('socialSecurity', socialSecurity);
 
-        if (results.size() > 0) {
-            return results;
-        } else {
-            throw new AuraHandledException('Something went wrong: Can not calculate Taxes with specified parameters!');
-        }
+        return results;
     }
     
     public static List<Federal_Tax_Bracket__mdt> getTaxBrackets(String filingStatus) {
@@ -87,12 +79,12 @@ public with sharing class TakeHomePayEstimatorController {
 
     @AuraEnabled
     public static void updateJobApplication(Id recordId, TakeHomePayWrapper wrapper, String filingStatus){
-        if (!Schema.SObjectType.Job_Application__c.isUpdateable()) {
-            throw new SecurityException(
-                'You can not update Job Application record'
-            );
-        }
         try {
+            if (!Schema.SObjectType.Job_Application__c.isUpdateable()) {
+                throw new SecurityException(
+                    'You can not update Job Application record'
+                );
+            }
             Job_Application__c jobApp = new Job_Application__c(
                 Id = recordId,
                 Federal_Income_Tax__c = wrapper.federalTaxValue,
@@ -103,8 +95,11 @@ public with sharing class TakeHomePayEstimatorController {
                 Filing_status__c = filingStatus
             );
             Database.update(jobApp);
-        } catch (Exception ex) {
-            throw new AuraHandledException(ex.getMessage());
+        } catch (SecurityException ex) {
+            String message = ex.getMessage();
+            AuraHandledException auraEx = new AuraHandledException(message);
+            auraEx.setMessage(message);
+            throw auraEx;
         }
     }
 }

@@ -132,7 +132,7 @@ private class TakeHomePayEstimatorControllerTest {
             } 
         } catch (Exception ex) {
             // Assert
-            Assert.areEqual('System.SecurityException', ex.getTypeName(), 'Expected to get thrown SecurityException');
+            Assert.areEqual('System.AuraHandledException', ex.getTypeName(), 'Expected to get thrown AuraHandledException');
             Assert.areEqual('You can not update Job Application record', ex.getMessage(), 'Exception messages do not match');
         }
         Test.stopTest();

@@ -53,15 +53,11 @@ public class InterviewNotificationsBatch implements Database.Batchable<sObject>,
             emails.add(composeEmailMessage(interview));
         }
         if (emails.size() > 0) {
-            try {
-                List<Messaging.SendEmailResult> sendEmailRes = Messaging.sendEmail(emails);
-                for (Messaging.SendEmailResult emailRes : sendEmailRes) {
-                    If (emailRes.isSuccess()) {
-                        emailsSent = emailsSent + 1;
-                    }
+            List<Messaging.SendEmailResult> sendEmailRes = Messaging.sendEmail(emails);
+            for (Messaging.SendEmailResult emailRes : sendEmailRes) {
+                If (emailRes.isSuccess()) {
+                    emailsSent = emailsSent + 1;
                 }
-            } catch (MyEmailException ex) {
-                throw new MyEmailException('Error sending email: ' + ex.getMessage());
             }
         }
     }
