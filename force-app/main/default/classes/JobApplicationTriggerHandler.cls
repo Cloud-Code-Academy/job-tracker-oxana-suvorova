@@ -20,6 +20,10 @@ public with sharing class JobApplicationTriggerHandler extends TriggerHandler {
         // Collect Account (Company) Ids to get Contacts
         Set<Id> companies = new Set<Id>();
         for (Job_Application__c jobApp : this.newJobApps) {
+            // Set a follow-up date to the next day
+            if (jobApp.Follow_up_date__c == null) {
+                jobApp.Follow_up_date__c = Date.today().addDays(1);
+            }
             if (jobApp.Primary_Contact__c == null && jobApp.Company_Name__c != null) { 
                 companies.add(jobApp.Company_Name__c);
             }
