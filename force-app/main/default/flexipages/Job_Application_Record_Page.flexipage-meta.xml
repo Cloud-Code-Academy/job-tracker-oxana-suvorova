@@ -101,18 +101,18 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentName>takeHomePayEstimator</componentName>
-                <identifier>c_takeHomePayEstimator</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
                 <componentInstanceProperties>
                     <name>tabs</name>
                     <value>sidebartabs</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
                 <identifier>flexipage_tabset2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>takeHomePayEstimator</componentName>
+                <identifier>c_takeHomePayEstimator</identifier>
             </componentInstance>
         </itemInstances>
         <mode>Replace</mode>
