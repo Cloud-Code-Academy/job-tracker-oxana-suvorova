@@ -17,6 +17,10 @@
         <name>Tax_Deduction__mdt</name>
     </customMetadataTypeAccesses>
     <description>Enables the sharing and field-level security of objects and fields of the Job Application Tracker application.</description>
+    <externalCredentialPrincipalAccesses>
+        <enabled>true</enabled>
+        <externalCredentialPrincipal>JoobleKey-APIKey</externalCredentialPrincipal>
+    </externalCredentialPrincipalAccesses>
     <fieldPermissions>
         <editable>true</editable>
         <field>Job_Application__c.Annual_Take_home_Pay__c</field>

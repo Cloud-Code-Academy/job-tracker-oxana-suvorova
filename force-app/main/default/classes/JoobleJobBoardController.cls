@@ -35,7 +35,10 @@ public with sharing class JoobleJobBoardController {
             return newJobs;
 
         } catch (Exception ex) {
-            throw new AuraHandledException(ex.getMessage());
+            String message = ex.getMessage();
+            AuraHandledException auraEx = new AuraHandledException(message);
+            auraEx.setMessage(message);
+            throw auraEx;
         }
     }
 
