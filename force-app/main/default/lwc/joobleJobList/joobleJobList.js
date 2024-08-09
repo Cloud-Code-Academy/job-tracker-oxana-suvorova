@@ -3,8 +3,9 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import saveNewJobPositions from '@salesforce/apex/JoobleJobBoardController.saveNewJobPositions';
 
 // Import message service features for subscribing
-import { subscribe, MessageContext } from 'lightning/messageService';
+import { subscribe, publish, MessageContext } from 'lightning/messageService';
 import JOOBLE_SEARCH_RESULT_CHANNEL from '@salesforce/messageChannel/JoobleSearchResult__c';
+import JOOBLEJOB_ACTIVE_CHANNEL from '@salesforce/messageChannel/JoobleJobActive__c';
 
 const COLS = [
     { label: 'Title', fieldName: 'title' },
@@ -14,7 +15,7 @@ const COLS = [
     { label: 'Company', fieldName: 'company' },
     { label: 'Updated', fieldName: 'updated', type: 'date' },
     { label: 'Source', fieldName: 'source' },
-    { label: 'Link', fieldName: 'link', type: 'url' }
+    { type: 'action', typeAttributes: { rowActions: [{ label: 'Show details', name: 'show_details' }]} }
 ];
 
 export default class JoobleJobList extends LightningElement {
@@ -89,4 +90,10 @@ export default class JoobleJobList extends LightningElement {
             this._saveselected = false;
         }
     }
+
+    handleRowAction(event) {
+        const payload = { jobDetails: event.detail.row };
+        publish(this.messageContext, JOOBLEJOB_ACTIVE_CHANNEL, payload);
+    }
+    
 }
