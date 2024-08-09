@@ -7,6 +7,11 @@ import { subscribe, publish, MessageContext } from 'lightning/messageService';
 import JOOBLE_SEARCH_RESULT_CHANNEL from '@salesforce/messageChannel/JoobleSearchResult__c';
 import JOOBLEJOB_ACTIVE_CHANNEL from '@salesforce/messageChannel/JoobleJobActive__c';
 
+const ROW_ACTIONS = [
+    { label: 'Show details', name: 'show_details' },
+    { label: 'Save Selected Jobs', name: 'save_selected_jobs' }
+];
+
 const COLS = [
     { label: 'Title', fieldName: 'title' },
     { label: 'Location', fieldName: 'location' },
@@ -15,7 +20,7 @@ const COLS = [
     { label: 'Company', fieldName: 'company' },
     { label: 'Updated', fieldName: 'updated', type: 'date' },
     { label: 'Source', fieldName: 'source' },
-    { type: 'action', typeAttributes: { rowActions: [{ label: 'Show details', name: 'show_details' }]} }
+    { type: 'action', typeAttributes: { rowActions: ROW_ACTIONS } }
 ];
 
 export default class JoobleJobList extends LightningElement {
@@ -88,12 +93,29 @@ export default class JoobleJobList extends LightningElement {
                 );
             }
             this._saveselected = false;
+        } else {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Warning',
+                    message: 'There are no selected rows',
+                    variant: 'warning'
+                })
+            );
         }
     }
 
     handleRowAction(event) {
-        const payload = { jobDetails: event.detail.row };
-        publish(this.messageContext, JOOBLEJOB_ACTIVE_CHANNEL, payload);
+        switch (event.detail.action.name) {
+            case 'show_details':
+                const payload = { jobDetails: event.detail.row };
+                publish(this.messageContext, JOOBLEJOB_ACTIVE_CHANNEL, payload);
+                break;
+            case 'save_selected_jobs':
+                this.pushSelectedData();
+                break;
+            default:
+                break;
+        }
     }
     
 }
