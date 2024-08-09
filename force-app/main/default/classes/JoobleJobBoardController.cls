@@ -9,19 +9,9 @@ public with sharing class JoobleJobBoardController {
     * @return: The List of wrapped Job positions
     **/
     @AuraEnabled
-    public static List<JoobleWrapper.JoobleJob> getNewJobPositions(String keywords, String location, Datetime dateFrom){
+    public static List<JoobleWrapper.JoobleJob> getNewJobPositions(Map<String, Object> paramsMap){
         try {
             List<JoobleWrapper.JoobleJob> newJobs = new List<JoobleWrapper.JoobleJob>();
-
-            Map<String, String> paramsMap = new Map<String, String>();
-            paramsMap.put('keywords', keywords);
-            paramsMap.put('location', location);
-            // For now, I add limit on number of jobs from the Jooble.
-            // TODO: Add pages and refreshApex to get more job records
-            paramsMap.put('resultonpage', '20');
-            if (dateFrom != null) {
-                paramsMap.put('datecreatedfrom', dateFrom.format('yyyy-MM-dd'));
-            }
             String params = JSON.serialize(paramsMap);
             
             HttpResponse response = makeCallout(params);

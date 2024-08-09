@@ -8,6 +8,7 @@ export default class JoobleJobBoard extends LightningElement {
     keywords = 'salesforce developer';
     location = 'Boston MA';
     datecreatedfrom;
+    page = 1;
 
     @wire(MessageContext)
     messageContext;
@@ -26,6 +27,16 @@ export default class JoobleJobBoard extends LightningElement {
         this.datecreatedfrom = event.target.value;
     }
 
+    handlePrevious() {
+        if (this.page > 1) {
+            this.page = this.page - 1;
+        }
+    }
+
+    handleNext() {
+        this.page = this.page + 1;
+    }
+
     async handleSearchClick() {
         // Check if required field were filled out
         const allValid = [
@@ -38,7 +49,14 @@ export default class JoobleJobBoard extends LightningElement {
         
         // If all valid, request new positions
         if (allValid) {
-            getNewJobPositions({ keywords: this.keywords, location: this.location, dateFrom: this.datecreatedfrom })
+            const PARAMS = {
+                keywords: this.keywords,
+                location: this.location,
+                datecreatedfrom: this.datecreatedfrom,
+                page: this.page,
+                resultonpage: '20'
+            };
+            getNewJobPositions({ paramsMap: PARAMS })
             .then(data => {
                 const payload = { searchResult: data };
                 publish(this.messageContext, JOOBLE_SEARCH_RESULT_CHANNEL, payload);

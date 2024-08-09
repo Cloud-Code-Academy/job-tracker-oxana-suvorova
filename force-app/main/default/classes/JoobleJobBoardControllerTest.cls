@@ -11,13 +11,14 @@ private class JoobleJobBoardControllerTest {
     static void testGetNewJobPositions() {
         // Set test data
         Test.setMock(HttpCalloutMock.class, new JoobleJobBoardCalloutMock());
-        String keywords = 'salesforce developer';
-        String location = 'Boston';
-        Datetime dateFrom = Datetime.newInstance(2024, 7, 1);
+        Map<String, Object> paramsMap = new Map<String, Object>();
+        paramsMap.put('keywords', 'salesforce developer');
+        paramsMap.put('location', 'Boston');
+        paramsMap.put('datecreatedfrom', Datetime.newInstance(2024, 7, 1));
 
         // Run test
         Test.startTest();
-        List<JoobleWrapper.JoobleJob> searchResult = JoobleJobBoardController.getNewJobPositions(keywords, location, dateFrom);
+        List<JoobleWrapper.JoobleJob> searchResult = JoobleJobBoardController.getNewJobPositions(paramsMap);
         Test.stopTest();
 
         // Assert
@@ -39,15 +40,15 @@ private class JoobleJobBoardControllerTest {
     static void testGetNewJobPositions_CatchException() {
         // Set test data
         Test.setMock(HttpCalloutMock.class, new JoobleJobBoardCalloutMockBadResponse());
-        String keywords = '';
-        String location = '';
-        Datetime dateFrom;
+        Map<String, Object> paramsMap = new Map<String, Object>();
+        paramsMap.put('keywords', '');
+        paramsMap.put('location', '');
         String exType;
 
         // Run test
         Test.startTest();
         try {
-            List<JoobleWrapper.JoobleJob> searchResult = JoobleJobBoardController.getNewJobPositions(keywords, location, dateFrom);
+            List<JoobleWrapper.JoobleJob> searchResult = JoobleJobBoardController.getNewJobPositions(paramsMap);
         } catch (Exception ex) {
             exType = ex.getTypeName();
         }

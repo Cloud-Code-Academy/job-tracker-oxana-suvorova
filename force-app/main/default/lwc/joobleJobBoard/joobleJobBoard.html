@@ -34,9 +34,24 @@
                         onclick={handleSearchClick}
                 ></lightning-button>
                 <lightning-button
+                        label="Prev"
+                        icon-name="utility:chevronleft"
+                        onclick={handlePrevious}
+                ></lightning-button>
+                <div lwc:if={page} class="slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <p>Page:&nbsp;{page}</p>
+                </div>
+                <lightning-button
+                        label="Next"
+                        icon-name="utility:chevronright"
+                        icon-position="right"
+                        onclick={handleNext}
+                ></lightning-button>
+                <lightning-button
                         label="Save Selected Jobs"
                         variant="brand"
                         icon-name="utility:insert_template"
+                        class="slds-p-horizontal_medium"
                         onclick={handleSaveSelectedJobsClick}
                 ></lightning-button>
                 <div lwc:if={error} class="slds-var-m-around_medium">
