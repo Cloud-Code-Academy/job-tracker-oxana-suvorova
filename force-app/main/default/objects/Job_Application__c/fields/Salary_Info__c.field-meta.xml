@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Salary_Info__c</fullName>
+    <description>Text information about salary value. Also contains information from the Jooble Job Board.</description>
+    <externalId>false</externalId>
+    <label>Salary (Info)</label>
+    <length>50</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

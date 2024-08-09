@@ -26,11 +26,42 @@ Key Recommendations 📝
 - Code Over Click: Although tempting, emphasize coded solutions over Salesforce's declarative features.
 - Fresh Start: Start with a fresh Trailhead Playground or Developer org to avoid existing automation or configuration.
 
-## Helpful Resources 🛠️
+## Project Description
 
-- [Apex Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_dev_guide.htm)
-- [Salesforce Stack Exchange](https://salesforce.stackexchange.com/)
-- [Visual Studio Code Documentation](https://code.visualstudio.com/docs)
-- [Salesforce Extensions for Visual Studio Code](https://developer.salesforce.com/tools/vscode/)
+### Entity Relationship Diagram
 
-Remember, the coding journey is filled with exploration, mistakes, learning, and growth. Enjoy this process, and here's wishing you success in your Salesforce journey with Cloud Code Academy! 🌟
+![ERD](force-app/main/default/staticresources/images/JobApplicationTrackerERD.png)
+
+### Installation
+
+1. Set up your environment.
+2. Clone the repository
+
+```zsh
+git clone https://github.com/Cloud-Code-Academy/job-tracker-oxana-suvorova.git
+cd job-tracker-oxana-suvorova
+```
+
+3. Authorize with your org and provide it with an alias (<strong>jobapptracker</strong> for example)
+
+```zsh
+sf org login web --set-default --alias jobapptracker
+```
+
+4. Deploy the Project to your org
+
+```zsh
+sf project deploy start
+```
+
+5. Assign the Job_Application_Tracker_Permissions permission set to the default user
+
+```zsh
+sf org assign permset --name Job_Application_Tracker_Permissions
+```
+
+6. Open the Org
+
+```zsh
+sf org open
+```

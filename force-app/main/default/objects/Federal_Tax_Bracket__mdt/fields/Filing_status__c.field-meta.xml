@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Filing_status__c</fullName>
+    <description>Tax filing status value. Uses in the &apos;Take-Home Pay Estimator&apos; calculator.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Filing status</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Single</fullName>
+                <default>true</default>
+                <label>Single</label>
+            </value>
+            <value>
+                <fullName>MarriedFJointly</fullName>
+                <default>false</default>
+                <label>MarriedFJointly</label>
+            </value>
+            <value>
+                <fullName>MarriedFSeparately</fullName>
+                <default>false</default>
+                <label>MarriedFSeparately</label>
+            </value>
+            <value>
+                <fullName>HeadOfHousehold</fullName>
+                <default>false</default>
+                <label>HeadOfHousehold</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

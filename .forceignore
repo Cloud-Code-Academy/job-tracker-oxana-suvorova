@@ -2,7 +2,10 @@
 # More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_exclude_source.htm
 #
 
+#Standard metadata
 package.xml
+**/appMenus/**
+**/appSwitcher/**
 
 # LWC configuration files
 **/jsconfig.json
@@ -10,3 +13,9 @@ package.xml
 
 # LWC Jest
 **/__tests__/**
+
+# Profiles
+**/B2B Reordering Portal Buyer Profile.profile-meta.xml
+**/tsconfig.json
+
+**/*.ts

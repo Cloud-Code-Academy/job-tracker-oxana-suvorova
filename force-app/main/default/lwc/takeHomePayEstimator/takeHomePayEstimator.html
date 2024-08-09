@@ -1,0 +1,119 @@
+<template>
+    <lightning-card title="Take-Home Pay Estimation" icon-name="standard:tax_rate">
+        <div class="slds-var-m-around_medium">
+            <lightning-input
+                type="number"
+                label="Annual income"
+                formatter="currency"
+                step="0.01"
+                disabled={recordPage}
+                value={annualIncome}
+                onchange={annualIncomeChange}
+            ></lightning-input>
+            <lightning-combobox
+                label="Filing status"
+                value={filingStatus}
+                onchange={filingStatusChange}
+                options={filingStatusOptions}
+            ></lightning-combobox>
+            <p>Your Standard Deduction: &nbsp;
+                <lightning-formatted-number
+                    format-style="currency"
+                    currency-code="USD"
+                    value={standardDeduction}
+                ></lightning-formatted-number>
+            </p>
+            <p>Taxable Income: &nbsp;
+                <lightning-formatted-number
+                    format-style="currency"
+                    currency-code="USD"
+                    value={taxableIncome}
+                ></lightning-formatted-number>
+            </p>
+            <lightning-input 
+                type="number" 
+                label="Federal taxes"
+                formatter="currency"
+                step="0.01"
+                disabled value={federalTaxValue} 
+            ></lightning-input>
+            <lightning-input 
+                type="number" 
+                label="Social Security"
+                formatter="currency"
+                step="0.01"
+                disabled value={socialSecurity} 
+            ></lightning-input>
+            <lightning-input 
+                type="number" 
+                label="Medicare Withholding"
+                formatter="currency"
+                step="0.01"
+                disabled value={medicare} 
+            ></lightning-input>
+            <br />
+            <div class="slds-text-heading_small slds-text-align_center">
+                <strong>Estimated Take-Home Pay:</strong>
+            </div>
+            <div class="slds-grid slds-grid_align-space">
+                <div class="slds-col">
+                    <span class="slds-text-heading_small ">annual: &nbsp;
+                        <lightning-formatted-number
+                            format-style="currency"
+                            currency-code="USD"
+                            value={annualPaycheck}
+                        ></lightning-formatted-number>
+                    </span>
+                </div>
+                <div class="slds-col">
+                    <span class="slds-text-heading_small ">monthly: &nbsp;
+                        <lightning-formatted-number
+                            format-style="currency"
+                            currency-code="USD"
+                            value={monthlyPaycheck}
+                        ></lightning-formatted-number>
+                    </span>
+                </div>
+            </div>
+            <div class="slds-grid slds-grid_align-space">
+                <div class="slds-col">
+                    <span class="slds-text-heading_small ">semi-annual: &nbsp;
+                        <lightning-formatted-number
+                            format-style="currency"
+                            currency-code="USD"
+                            value={semiannualPaycheck}
+                        ></lightning-formatted-number>
+                    </span>
+                </div>
+                <div class="slds-col">
+                    <span class="slds-text-heading_small ">bi-weekly: &nbsp;
+                        <lightning-formatted-number
+                            format-style="currency"
+                            currency-code="USD"
+                            value={biweeklyPaycheck}
+                        ></lightning-formatted-number>
+                    </span>
+                </div>
+            </div>
+            <br />
+            <lightning-button
+                label="Estimate"
+                variant="brand"
+                onclick={handleEstimateClick}
+            ></lightning-button>
+            <lightning-button lwc:if={recordPage}
+                label="Update Job Application"
+                variant="brand-outline"
+                class="slds-m-left_small"
+                onclick={handleUpdateJobAppClick}
+                disabled={needCalculate}
+            ></lightning-button>
+            <span lwc:if={needCalculate} class="slds-m-left_small slds-text-color_destructive">
+                Data not yet calculated. Click 'Estimate'.
+            </span>
+            <div lwc:if={error} class="slds-var-m-around_medium">
+                <p class="slds-text-color_error">Error:&nbsp;{error}</p>
+            </div>
+        </div>
+    </lightning-card>
+</template>
