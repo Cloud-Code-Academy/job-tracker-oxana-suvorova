@@ -31,8 +31,8 @@ export default class JoobleJobBoard extends LightningElement {
     handlePrevious() {
         if (this.page > 1) {
             this.page = this.page - 1;
+            handleSearchClick();
         }
-        handleSearchClick();
     }
 
     handleNext() {
