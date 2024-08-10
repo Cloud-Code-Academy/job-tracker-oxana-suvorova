@@ -31,13 +31,13 @@ export default class JoobleJobBoard extends LightningElement {
     handlePrevious() {
         if (this.page > 1) {
             this.page = this.page - 1;
-            handleSearchClick();
+            this.handleSearchClick();
         }
     }
 
     handleNext() {
         this.page = this.page + 1;
-        handleSearchClick();
+        this.handleSearchClick();
     }
 
     async handleSearchClick() {
