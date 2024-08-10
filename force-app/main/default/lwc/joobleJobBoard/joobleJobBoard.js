@@ -1,4 +1,5 @@
 import { LightningElement, track, wire, api } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getNewJobPositions from '@salesforce/apex/JoobleJobBoardController.getNewJobPositions'
 // Import message service features for publishing and the message channel
 import { publish, MessageContext } from 'lightning/messageService';
@@ -31,10 +32,12 @@ export default class JoobleJobBoard extends LightningElement {
         if (this.page > 1) {
             this.page = this.page - 1;
         }
+        handleSearchClick();
     }
 
     handleNext() {
         this.page = this.page + 1;
+        handleSearchClick();
     }
 
     async handleSearchClick() {
@@ -62,8 +65,14 @@ export default class JoobleJobBoard extends LightningElement {
                 publish(this.messageContext, JOOBLE_SEARCH_RESULT_CHANNEL, payload);
             })
             .catch(error => {
-                this.error = error;
-                crossOriginIsolated.log(' error ', this.error);
+                this.error = error.body.message;
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error while requesting the Jooble Service',
+                        message: error.body.message,
+                        variant: 'error'
+                    })
+                );
             })
         } else {
             this.error = 'Please fill all required fields out';
