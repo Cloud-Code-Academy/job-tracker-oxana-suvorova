@@ -1,0 +1,18 @@
+<html style="overflow-y: hidden;">
+<head>
+	<title></title>
+</head>
+<body style="height: auto; min-height: auto;">Hey&nbsp;{!User.Name},<br />
+<br />
+Sending along a reminder about your upcoming interview on {!Event.StartDateTime} at {!Event.Location}.<br />
+Review the following information:
+<ul>
+	<li>Interview Subject: {!Event.Subject}</li>
+	<li>Contact Name:&nbsp;{!Contact.Name}</li>
+	<li>Job Application:&nbsp;{!Job_Application__c.Name}</li>
+	<li>Interview format:&nbsp;{!Event.Interview_Format__c}</li>
+	<li>Interview type:&nbsp;{!Event.Interview_Type__c}</li>
+	<li>Description:&nbsp;{!Event.Description}</li>
+</ul>
+Good luck, you will succeed!</body>
+</html>

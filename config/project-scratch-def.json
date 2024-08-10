@@ -1,6 +1,7 @@
 {
-  "orgName": "Demo company",
+  "orgName": "JAT",
   "edition": "Developer",
+  "description": "First Scratch org for working on the Capstone Project",
   "features": ["EnableSetPasswordInApi"],
   "settings": {
     "lightningExperienceSettings": {

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Filing_status__c</fullName>
+    <description>The Tax Filing status for which the estimation was performed.</description>
+    <externalId>false</externalId>
+    <label>Filing status</label>
+    <length>30</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

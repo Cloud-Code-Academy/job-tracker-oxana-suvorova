@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>MFJ12</label>
+    <protected>false</protected>
+    <values>
+        <field>Calculation_order__c</field>
+        <value xsi:type="xsd:double">6.0</value>
+    </values>
+    <values>
+        <field>Filing_status__c</field>
+        <value xsi:type="xsd:string">MarriedFJointly</value>
+    </values>
+    <values>
+        <field>Min_Bracket__c</field>
+        <value xsi:type="xsd:double">23201.0</value>
+    </values>
+    <values>
+        <field>Tax_Rate__c</field>
+        <value xsi:type="xsd:double">0.12</value>
+    </values>
+    <values>
+        <field>Tax_Value__c</field>
+        <value xsi:type="xsd:double">2320.0</value>
+    </values>
+</CustomMetadata>
